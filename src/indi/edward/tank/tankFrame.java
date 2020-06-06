@@ -6,7 +6,10 @@ import java.awt.event.WindowEvent;
 
 public class tankFrame extends Frame {
 
+    int x = 200, y = 200;
+
     public tankFrame(){
+
         this.setSize(800, 600);
         this.setResizable(false);
         this.setTitle("Tank Wars");
@@ -23,6 +26,8 @@ public class tankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        g.fillRect(200,200,50,50);
+        g.fillRect(x,y,50,50);
+        x += 10;
+        y += 10;
     }
 }
