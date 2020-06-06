@@ -9,6 +9,8 @@ import java.awt.event.WindowEvent;
 public class tankFrame extends Frame {
 
     int x = 200, y = 200;
+    Dir dir = Dir.DOWN;
+    private static final int SPEED = 10;
 
     public tankFrame(){
 
@@ -30,8 +32,22 @@ public class tankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         g.fillRect(x,y,50,50);
-//        x += 10;
-//        y += 10;
+        switch (dir){
+            case LEFT:
+                x -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
+            default: break;
+
+        }
     }
 
     class MykeyListener extends KeyAdapter{
@@ -60,6 +76,8 @@ public class tankFrame extends Frame {
                     break;
                 default: break;
             }
+
+            setMainTankDir();
         }
 
         @Override
@@ -80,6 +98,15 @@ public class tankFrame extends Frame {
                     break;
                 default: break;
             }
+
+            setMainTankDir();
+        }
+
+        public void setMainTankDir(){
+            if(BL) dir = Dir.LEFT;
+            if(BR) dir = Dir.RIGHT;
+            if(BU) dir = Dir.UP;
+            if(BD) dir = Dir.DOWN;
         }
     }
 }
