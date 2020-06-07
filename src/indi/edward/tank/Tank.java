@@ -1,6 +1,7 @@
 package indi.edward.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 
 public class Tank {
@@ -9,15 +10,18 @@ public class Tank {
     private Dir dir = Dir.DOWN;
     private TankFrame tf;
     private boolean isAlive = true;
-    private boolean moving = false;
-    private static final int SPEED = 5;
+    private boolean moving = true;
+    private Random random = new Random();
+    private Group group = Group.BAD;
+    private static final int SPEED = 3;
     public static final int TANK_HEIGHT = ResourceMgr.tankL.getHeight();
     public static final int TANK_WIDTH = ResourceMgr.tankL.getWidth();
 
-    public Tank(int x, int y, Dir dir, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tf = tf;
     }
 
@@ -51,6 +55,14 @@ public class Tank {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void paint(Graphics g) {
@@ -96,13 +108,14 @@ public class Tank {
                 default: break;
 
             }
+            if(random.nextInt(10) > 7) fire();
         }
     }
 
     public void fire() {
         double bX = this.x + TANK_WIDTH/2 - Bullet.BULLET_WIDTH/2;
         double bY = this.y + TANK_HEIGHT/2 - Bullet.BULLET_HEIGHT/2;
-        tf.bullets.add(new Bullet((int)bX, (int)bY, this.dir, this.tf));
+        tf.bullets.add(new Bullet((int)bX, (int)bY, this.dir, this.group, this.tf));
     }
 
     public void die() {
