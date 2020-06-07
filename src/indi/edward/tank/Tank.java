@@ -1,19 +1,21 @@
 package indi.edward.tank;
 
 import java.awt.*;
-import java.text.CollationElementIterator;
+
 
 public class Tank {
     private int x;
     private int y;
     private Dir dir = Dir.DOWN;
+    private TankFrame tf;
     private boolean moving = false;
     private static final int SPEED = 5;
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     public Dir getDir() {
@@ -61,6 +63,10 @@ public class Tank {
 
             }
         }
+    }
+
+    public void fire() {
+        tf.bullets.add(new Bullet(this.x, this.y, this.dir, this.tf));
     }
 }
 
