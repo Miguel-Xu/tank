@@ -18,3 +18,8 @@
 *.zip
 *.tar.gz
 *.rar
+
+#idea
+*.idea
+/out/
+*.iml
