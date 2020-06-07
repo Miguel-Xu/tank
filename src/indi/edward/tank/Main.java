@@ -1,12 +1,8 @@
 package indi.edward.tank;
 
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-public class main {
+public class Main {
     public static void main(String[] args) throws InterruptedException {
-        tankFrame tf = new tankFrame();
+        TankFrame tf = new TankFrame();
 
         while(true){
             Thread.sleep(50);

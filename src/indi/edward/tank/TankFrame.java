@@ -6,13 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class tankFrame extends Frame {
+public class TankFrame extends Frame {
 
-    int x = 200, y = 200;
-    Dir dir = Dir.DOWN;
-    private static final int SPEED = 10;
+    Tank myTank = new Tank(200,200,Dir.DOWN);
 
-    public tankFrame(){
+
+    public TankFrame(){
 
         this.setSize(800, 600);
         this.setResizable(false);
@@ -31,23 +30,9 @@ public class tankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x,y,50,50);
-        switch (dir){
-            case LEFT:
-                x -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
-            default: break;
 
-        }
+        myTank.paint(g);
+
     }
 
     class MykeyListener extends KeyAdapter{
@@ -103,10 +88,10 @@ public class tankFrame extends Frame {
         }
 
         public void setMainTankDir(){
-            if(BL) dir = Dir.LEFT;
-            if(BR) dir = Dir.RIGHT;
-            if(BU) dir = Dir.UP;
-            if(BD) dir = Dir.DOWN;
+            if(BL) myTank.setDir(Dir.LEFT);
+            if(BR) myTank.setDir(Dir.RIGHT);
+            if(BU) myTank.setDir(Dir.UP);
+            if(BD) myTank.setDir(Dir.DOWN);
         }
     }
 }
