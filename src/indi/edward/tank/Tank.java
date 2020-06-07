@@ -7,7 +7,7 @@ public class Tank {
     private int y;
     private Dir dir = Dir.DOWN;
     private boolean moving = false;
-    private static final int SPEED = 10;
+    private static final int SPEED = 5;
 
     public Tank(int x, int y, Dir dir) {
         this.x = x;
