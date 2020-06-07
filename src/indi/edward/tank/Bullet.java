@@ -1,13 +1,12 @@
 package indi.edward.tank;
 
 import java.awt.*;
-import indi.edward.tank.TankFrame;
 
 public class Bullet {
     public static final int BULLET_HEIGHT = ResourceMgr.bulletL.getHeight();
     public static final int BULLET_WIDTH = ResourceMgr.bulletL.getWidth();
     private static final int SPEED = 10;
-    private boolean live = true;
+    private boolean isAlive = true;
     private int x;
     private int y;
     private Dir dir;
@@ -22,7 +21,7 @@ public class Bullet {
     }
 
     public void paint(Graphics g) {
-        if(!live){
+        if(!isAlive){
             tf.bullets.remove(this);
         }
         switch(dir){
@@ -60,6 +59,19 @@ public class Bullet {
                 break;
             default: break;
         }
-        if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) live = false;
+        if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) isAlive = false;
+    }
+
+    public void collideWith(Tank tank) {
+        Rectangle bullet_rect = new Rectangle(this.x, this.y, BULLET_WIDTH, BULLET_HEIGHT);
+        Rectangle tank_rect = new Rectangle(tank.getX(), tank.getY(),Tank.TANK_WIDTH, Tank.TANK_HEIGHT);
+        if(bullet_rect.intersects(tank_rect)){
+            this.die();
+            tank.die();
+        }
+    }
+
+    private void die() {
+        isAlive = false;
     }
 }
