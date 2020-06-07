@@ -1,6 +1,7 @@
 package indi.edward.tank;
 
 import java.awt.*;
+import java.text.CollationElementIterator;
 
 public class Tank {
     private int x;
@@ -32,8 +33,10 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.GREEN);
         g.fillRect(x,y,50,50);
-
+        g.setColor(color);
         move();
 
     }
