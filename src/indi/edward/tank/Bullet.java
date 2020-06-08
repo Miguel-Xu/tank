@@ -13,6 +13,8 @@ public class Bullet {
     private Group group = Group.BAD;
     private TankFrame tf;
 
+    Rectangle rect = new Rectangle();
+
 
     public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -20,6 +22,11 @@ public class Bullet {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = BULLET_WIDTH;
+        rect.height = BULLET_HEIGHT;
     }
 
     public Group getGroup() {
@@ -69,17 +76,22 @@ public class Bullet {
                 break;
             default: break;
         }
+
+        rect.x = this.x;
+        rect.y = this.y;
+
         if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) isAlive = false;
     }
 
     public void collideWith(Tank tank) {
         if(this.group == tank.getGroup()) return;
-        Rectangle bullet_rect = new Rectangle(this.x, this.y, BULLET_WIDTH, BULLET_HEIGHT);
-        Rectangle tank_rect = new Rectangle(tank.getX(), tank.getY(),Tank.TANK_WIDTH, Tank.TANK_HEIGHT);
-        if(bullet_rect.intersects(tank_rect)){
+
+        if(this.rect.intersects(tank.rect)){
             this.die();
             tank.die();
-            tf.explosions.add(new Explosion(x,y, tf));
+            int eX = tank.getX() + Tank.TANK_WIDTH/2 - Explosion.EXPLOSION_WIDTH/2;
+            int eY = this.y + Tank.TANK_HEIGHT/2 - Explosion.EXPLOSION_HEIGHT/2;
+            tf.explosions.add(new Explosion(eX ,eY, tf));
         }
     }
 
