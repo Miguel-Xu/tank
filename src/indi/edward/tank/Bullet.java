@@ -11,7 +11,7 @@ public class Bullet {
     private int y;
     private Dir dir;
     private Group group = Group.BAD;
-    private TankFrame tf = null;
+    private TankFrame tf;
 
 
     public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
@@ -79,6 +79,7 @@ public class Bullet {
         if(bullet_rect.intersects(tank_rect)){
             this.die();
             tank.die();
+            tf.explosions.add(new Explosion(x,y, tf));
         }
     }
 
