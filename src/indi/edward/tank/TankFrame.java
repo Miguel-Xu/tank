@@ -1,5 +1,7 @@
 package indi.edward.tank;
 
+import indi.edward.tank.abstractfactory.*;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,10 +15,11 @@ public class TankFrame extends Frame {
     static final int GAME_WIDTH = 1080;
     static final int GAME_HEIGHT = 960;
     Tank myTank = new Tank(200,400,Dir.UP, Group.GOOD, this);
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> enemies = new ArrayList<>();
-    List<Explosion> explosions = new ArrayList<>();
+    List<BaseBullet> bullets = new ArrayList<>();
+    List<BaseTank> enemies = new ArrayList<>();
+    List<BaseExplosion> explosions = new ArrayList<>();
 
+    public AbstractGameFactory gf = new DefaultFactory();
 
     public TankFrame(){
 

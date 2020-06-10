@@ -1,8 +1,10 @@
 package indi.edward.tank;
 
+import indi.edward.tank.abstractfactory.BaseExplosion;
+
 import java.awt.*;
 
-public class Explosion {
+public class Explosion extends BaseExplosion {
     public static final int EXPLOSION_HEIGHT = ResourceMgr.explosions[0].getHeight();
     public static final int EXPLOSION_WIDTH = ResourceMgr.explosions[0].getWidth();
     private int x;

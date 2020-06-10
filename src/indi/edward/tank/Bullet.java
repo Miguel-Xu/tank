@@ -1,8 +1,11 @@
 package indi.edward.tank;
 
+import indi.edward.tank.abstractfactory.BaseBullet;
+import indi.edward.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends BaseBullet {
     public static final int BULLET_HEIGHT = ResourceMgr.bulletL.getHeight();
     public static final int BULLET_WIDTH = ResourceMgr.bulletL.getWidth();
     private static final int SPEED = 10;
@@ -27,6 +30,8 @@ public class Bullet {
         rect.y = this.y;
         rect.width = BULLET_WIDTH;
         rect.height = BULLET_HEIGHT;
+
+        tf.bullets.add(this);
     }
 
     public Group getGroup() {
@@ -37,6 +42,7 @@ public class Bullet {
         this.group = group;
     }
 
+    @Override
     public void paint(Graphics g) {
         if(!isAlive){
             tf.bullets.remove(this);
@@ -83,15 +89,16 @@ public class Bullet {
         if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) isAlive = false;
     }
 
-    public void collideWith(Tank tank) {
+    @Override
+    public void collideWith(BaseTank tank) {
         if(this.group == tank.getGroup()) return;
 
         if(this.rect.intersects(tank.rect)){
             this.die();
             tank.die();
             int eX = tank.getX() + Tank.TANK_WIDTH/2 - Explosion.EXPLOSION_WIDTH/2;
-            int eY = this.y + Tank.TANK_HEIGHT/2 - Explosion.EXPLOSION_HEIGHT/2;
-            tf.explosions.add(new Explosion(eX ,eY, tf));
+            int eY = tank.getY() + Tank.TANK_HEIGHT/2 - Explosion.EXPLOSION_HEIGHT/2;
+            tf.explosions.add(tf.gf.CreateExplosion(eX ,eY, tf));
         }
     }
 

@@ -1,23 +1,26 @@
 package indi.edward.tank;
 
+import indi.edward.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
 import java.util.Random;
 
 
-public class Tank {
+public class Tank extends BaseTank {
+
     private int x;
     private int y;
-    private Dir dir = Dir.DOWN;
-    private TankFrame tf;
+    private Dir dir ;
+    public TankFrame tf;
     private boolean isAlive = true;
+    private Group group;
     private boolean moving = true;
     private Random random = new Random();
-    private Group group = Group.BAD;
     private static final int SPEED = 3;
     public static final int TANK_HEIGHT = ResourceMgr.goodTankL.getHeight();
     public static final int TANK_WIDTH = ResourceMgr.goodTankL.getWidth();
 
-    Rectangle rect = new Rectangle();
+    FireStrategy fs ;
 
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -30,6 +33,14 @@ public class Tank {
         rect.y = this.y;
         rect.width = TANK_WIDTH;
         rect.height = TANK_HEIGHT;
+    }
+
+    public TankFrame getTf() {
+        return tf;
+    }
+
+    public void setTf(TankFrame tf) {
+        this.tf = tf;
     }
 
     public Dir getDir() {
@@ -64,14 +75,12 @@ public class Tank {
         this.y = y;
     }
 
-    public Group getGroup() {
-        return group;
-    }
 
     public void setGroup(Group group) {
         this.group = group;
     }
 
+    @Override
     public void paint(Graphics g) {
         if(!isAlive){
             tf.enemies.remove(this);
@@ -136,12 +145,27 @@ public class Tank {
         this.dir = Dir.values()[random.nextInt(4)];
     }
 
+
     public void fire() {
-        double bX = this.x + TANK_WIDTH/2 - Bullet.BULLET_WIDTH/2;
-        double bY = this.y + TANK_HEIGHT/2 - Bullet.BULLET_HEIGHT/2;
-        tf.bullets.add(new Bullet((int)bX, (int)bY, this.dir, this.group, this.tf));
+        if(this.group == Group.GOOD) {
+            try {
+                fs = (FireStrategy) Class.forName((String) PropertyMgr.getValue("goodFireStrategy")).getConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        else{
+            try {
+                fs = (FireStrategy) Class.forName((String) PropertyMgr.getValue("badFireStrategy")).getConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        fs.fire(this);
     }
 
+    @Override
     public void die() {
         isAlive = false;
     }
