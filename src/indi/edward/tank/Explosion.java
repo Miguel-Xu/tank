@@ -8,19 +8,19 @@ public class Explosion {
     private int x;
     private int y;
     private int step = 0;
-    private TankFrame tf = null;
+    private GameModel gm;
 
 
-    public Explosion(int x, int y, TankFrame tf) {
+    public Explosion(int x, int y, GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
     }
 
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.explosions[step++], x, y, null);
         if(step >= ResourceMgr.explosions.length){
-            tf.explosions.remove(this);
+            gm.explosions.remove(this);
         }
     }
 

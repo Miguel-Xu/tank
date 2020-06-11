@@ -5,17 +5,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class TankFrame extends Frame {
 
+    GameModel gm = new GameModel();
+
     static final int GAME_WIDTH = 1080;
     static final int GAME_HEIGHT = 960;
-    Tank myTank = new Tank(200,400,Dir.UP, Group.GOOD, this);
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> enemies = new ArrayList<>();
-    List<Explosion> explosions = new ArrayList<>();
 
 
     public TankFrame(){
@@ -53,26 +50,7 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        Color color = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("The Number of Bullet(s):" +bullets.size(),10, 50 );
-        g.drawString("The Number of enemies:" + enemies.size(), 160, 50);
-        g.setColor(color);
-        myTank.paint(g);
-        for(int i = 0; i < bullets.size(); i++){
-            bullets.get(i).paint(g);
-        }
-        for(int i = 0; i < enemies.size(); i++){
-            enemies.get(i).paint(g);
-        }
-        for(int i = 0; i < bullets.size(); i++){
-            for(int j = 0; j < enemies.size(); j++){
-                bullets.get(i).collideWith(enemies.get(j));
-            }
-        }
-        for(int i = 0; i < explosions.size(); i++){
-            explosions.get(i).paint(g);
-        }
+        gm.paint(g);
 
     }
 
@@ -123,7 +101,7 @@ public class TankFrame extends Frame {
                     BD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    myTank.fire();
+                    gm.getMyTank().fire();
                     break;
                 default: break;
             }
@@ -132,6 +110,7 @@ public class TankFrame extends Frame {
         }
 
         public void setMainTankDir(){
+            Tank myTank = gm.getMyTank();
             if(!BL && !BR && !BU && !BD) myTank.setMoving(false);
             else{
                 myTank.setMoving(true);

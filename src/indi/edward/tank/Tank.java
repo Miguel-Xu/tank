@@ -7,24 +7,24 @@ import java.util.Random;
 public class Tank {
     private int x;
     private int y;
-    private Dir dir = Dir.DOWN;
-    private TankFrame tf;
+    private Dir dir;
+    private GameModel gm;
     private boolean isAlive = true;
     private boolean moving = true;
     private Random random = new Random();
-    private Group group = Group.BAD;
+    private Group group;
     private static final int SPEED = 3;
     public static final int TANK_HEIGHT = ResourceMgr.goodTankL.getHeight();
     public static final int TANK_WIDTH = ResourceMgr.goodTankL.getWidth();
 
     Rectangle rect = new Rectangle();
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = this.x;
         rect.y = this.y;
@@ -74,7 +74,7 @@ public class Tank {
 
     public void paint(Graphics g) {
         if(!isAlive){
-            tf.enemies.remove(this);
+            gm.enemies.remove(this);
 
         }
         switch(dir){
@@ -139,7 +139,7 @@ public class Tank {
     public void fire() {
         double bX = this.x + TANK_WIDTH/2 - Bullet.BULLET_WIDTH/2;
         double bY = this.y + TANK_HEIGHT/2 - Bullet.BULLET_HEIGHT/2;
-        tf.bullets.add(new Bullet((int)bX, (int)bY, this.dir, this.group, this.tf));
+        gm.bullets.add(new Bullet((int)bX, (int)bY, this.dir, this.group, this.gm));
     }
 
     public void die() {
