@@ -2,7 +2,7 @@ package indi.edward.tank;
 
 import java.awt.*;
 
-public class Explosion {
+public class Explosion extends GameObject {
     public static final int EXPLOSION_HEIGHT = ResourceMgr.explosions[0].getHeight();
     public static final int EXPLOSION_WIDTH = ResourceMgr.explosions[0].getWidth();
     private int x;
@@ -19,8 +19,8 @@ public class Explosion {
 
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.explosions[step++], x, y, null);
-        if(step >= ResourceMgr.explosions.length){
-            gm.explosions.remove(this);
+        if (step >= ResourceMgr.explosions.length) {
+            gm.remove(this);
         }
     }
 

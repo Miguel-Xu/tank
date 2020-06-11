@@ -2,18 +2,17 @@ package indi.edward.tank;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends GameObject {
     public static final int BULLET_HEIGHT = ResourceMgr.bulletL.getHeight();
     public static final int BULLET_WIDTH = ResourceMgr.bulletL.getWidth();
     private static final int SPEED = 10;
+    Rectangle rect = new Rectangle();
     private boolean isAlive = true;
     private int x;
     private int y;
-    private Dir dir;
-    private Group group = Group.BAD;
-    private GameModel gm;
-
-    Rectangle rect = new Rectangle();
+    private final Dir dir;
+    private Group group;
+    private final GameModel gm;
 
 
     public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
@@ -38,21 +37,21 @@ public class Bullet {
     }
 
     public void paint(Graphics g) {
-        if(!isAlive){
-            gm.bullets.remove(this);
+        if (!isAlive) {
+            gm.remove(this);
         }
-        switch(dir){
+        switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.bulletL,x,y,null);
+                g.drawImage(ResourceMgr.bulletL, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.bulletR,x,y,null);
+                g.drawImage(ResourceMgr.bulletR, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.bulletU,x,y,null);
+                g.drawImage(ResourceMgr.bulletU, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.bulletD,x,y,null);
+                g.drawImage(ResourceMgr.bulletD, x, y, null);
                 break;
         }
         move();
@@ -61,7 +60,7 @@ public class Bullet {
 
     private void move() {
 
-        switch (dir){
+        switch (dir) {
             case LEFT:
                 x -= SPEED;
                 break;
@@ -74,24 +73,25 @@ public class Bullet {
             case DOWN:
                 y += SPEED;
                 break;
-            default: break;
+            default:
+                break;
         }
 
         rect.x = this.x;
         rect.y = this.y;
 
-        if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) isAlive = false;
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) isAlive = false;
     }
 
     public void collideWith(Tank tank) {
-        if(this.group == tank.getGroup()) return;
+        if (this.group == tank.getGroup()) return;
 
-        if(this.rect.intersects(tank.rect)){
+        if (this.rect.intersects(tank.rect)) {
             this.die();
             tank.die();
-            int eX = tank.getX() + Tank.TANK_WIDTH/2 - Explosion.EXPLOSION_WIDTH/2;
-            int eY = this.y + Tank.TANK_HEIGHT/2 - Explosion.EXPLOSION_HEIGHT/2;
-            gm.explosions.add(new Explosion(eX ,eY, gm));
+            int eX = tank.getX() + Tank.TANK_WIDTH / 2 - Explosion.EXPLOSION_WIDTH / 2;
+            int eY = this.y + Tank.TANK_HEIGHT / 2 - Explosion.EXPLOSION_HEIGHT / 2;
+            gm.add(new Explosion(eX, eY, gm));
         }
     }
 
